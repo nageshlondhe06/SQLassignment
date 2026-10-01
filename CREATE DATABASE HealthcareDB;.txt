@@ -1,0 +1,106 @@
+CREATE DATABASE HealthcareDB;
+USE HealthcareDB;
+
+CREATE TABLE Patients (
+    patient_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100) NOT NULL,
+    date_of_birth DATE,
+    gender VARCHAR(20),
+    phone VARCHAR(15),
+    email VARCHAR(100),
+    address VARCHAR(255),
+    insurance_number VARCHAR(50)
+);
+
+CREATE TABLE Doctors (
+    doctor_id INT PRIMARY KEY AUTO_INCREMENT,
+    doctor_name VARCHAR(100) NOT NULL,
+    specialization VARCHAR(100),
+    phone VARCHAR(15),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Diagnoses (
+    diagnosis_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    diagnosis_name VARCHAR(150),
+    diagnosis_date DATE,
+    description VARCHAR(255),
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)
+);
+
+CREATE TABLE Allergies (
+    allergy_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    allergy_name VARCHAR(100),
+    reaction VARCHAR(255),
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)
+);
+
+CREATE TABLE Medications (
+    medication_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    medication_name VARCHAR(100),
+    dosage VARCHAR(50),
+    start_date DATE,
+    end_date DATE,
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id)
+);
+
+CREATE TABLE Encounters (
+    encounter_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    doctor_id INT,
+    encounter_type VARCHAR(50),
+    appointment_date DATETIME,
+    admission_date DATETIME,
+    discharge_date DATETIME,
+    reason VARCHAR(255),
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+CREATE TABLE DisgnosticTests (
+    test_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    doctor_id INT,
+    test_type VARCHAR(100),
+    test_date DATE,
+    result VARCHAR(255),
+    remarks VARCHAR(255),
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+CREATE TABLE Prescriptions (
+    prescription_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    doctor_id INT,
+    medication_name VARCHAR(100),
+    dosage VARCHAR(50),
+    instructions VARCHAR(255),
+    prescription_date DATE,
+    dispensing_details VARCHAR(255),
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
+
+CREATE TABLE Procedures (
+    procedure_id INT PRIMARY KEY AUTO_INCREMENT,
+    patient_id INT,
+    doctor_id INT,
+    procedure_name VARCHAR(150),
+    procedure_type VARCHAR(100),
+    procedure_date DATE,
+    description VARCHAR(255),
+    outcome VARCHAR(255),
+
+    FOREIGN KEY (patient_id) REFERENCES Patients(patient_id),
+    FOREIGN KEY (doctor_id) REFERENCES Doctors(doctor_id)
+);
